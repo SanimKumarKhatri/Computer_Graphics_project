@@ -32,10 +32,10 @@ float aspectratio = float(width) / float(height);
   glfwSetInputMode(window, GLFW_CURSOR,GLFW_CURSOR_DISABLED);
 
   //mouse movement call back
-  //glfwSetCursorPosCallback(window, mouseCallback);
+  glfwSetCursorPosCallback(window, mouse_callback);
 
   //scroll callback
- // glfwSetScrollCallback(window, scrollCallBack);
+ glfwSetScrollCallback(window, scroll_callback);
 
   //window resize call back
  // glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
@@ -57,6 +57,8 @@ float aspectratio = float(width) / float(height);
   }
 
 
+  stbi_set_flip_vertically_on_load(true);
+
   //for color of the background
   glClearColor(0.7f, 0.13f, 0.8f, 0.4f);
 
@@ -68,46 +70,6 @@ float aspectratio = float(width) / float(height);
   const GLubyte* rendererData = glGetString(GL_RENDERER); // Returns a hint to the model
   std::cout << "Vendor:" << vendor << "   " << "Graphics card:" << rendererData << std::endl;
   std::cout << glGetString(GL_VERSION) << std::endl;
-
-
-  /*static const float g_vertex[] = {
-	-1.0f,-1.0f,-1.0f, // triangle 1 : begin
-	-1.0f,-1.0f, 1.0f,
-	-1.0f, 1.0f, 1.0f, // triangle 1 : end
-	1.0f, 1.0f,-1.0f, // triangle 2 : begin
-	-1.0f,-1.0f,-1.0f,
-	-1.0f, 1.0f,-1.0f, // triangle 2 : end
-	1.0f,-1.0f, 1.0f,
-	-1.0f,-1.0f,-1.0f,
-	1.0f,-1.0f,-1.0f,
-	1.0f, 1.0f,-1.0f,
-	1.0f,-1.0f,-1.0f,
-	-1.0f,-1.0f,-1.0f,
-	-1.0f,-1.0f,-1.0f,
-	-1.0f, 1.0f, 1.0f,
-	-1.0f, 1.0f,-1.0f,
-	1.0f,-1.0f, 1.0f,
-	-1.0f,-1.0f, 1.0f,
-	-1.0f,-1.0f,-1.0f,
-	-1.0f, 1.0f, 1.0f,
-	-1.0f,-1.0f, 1.0f,
-	1.0f,-1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f,
-	1.0f,-1.0f,-1.0f,
-	1.0f, 1.0f,-1.0f,
-	1.0f,-1.0f,-1.0f,
-	1.0f, 1.0f, 1.0f,
-	1.0f,-1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f,
-	1.0f, 1.0f,-1.0f,
-	-1.0f, 1.0f,-1.0f,
-	1.0f, 1.0f, 1.0f,
-	-1.0f, 1.0f,-1.0f,
-	-1.0f, 1.0f, 1.0f,
-	1.0f, 1.0f, 1.0f,
-	-1.0f, 1.0f, 1.0f,
-	1.0f,-1.0f, 1.0f
-  };*/
 
   //shaders
   Shader skyboxShader("../../../src/resources/shaders/skyboxVS.glsl", "../../../src/resources/shaders/skyboxFS.glsl");
@@ -130,6 +92,7 @@ float aspectratio = float(width) / float(height);
   unsigned int cubemapTexture = loadCubemap(faces);
   skyboxShader.use();
   skyboxShader.setInt("skybox", 0);
+  
   //ground plane
   unsigned int groundPlaneVBO, groundPlaneVAO, groundPlaneEBO;
   glGenVertexArrays(1, &groundPlaneVAO);
@@ -171,6 +134,7 @@ float aspectratio = float(width) / float(height);
 	  std::cout << "Failed to load texture" << std::endl;
   }
   stbi_image_free(data);
+
   //groundMatrix
   glm::mat4 groundModelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(10.f, -1.5f, 0.f));
   groundModelMatrix = glm::scale(groundModelMatrix, glm::vec3(500.f));
@@ -189,7 +153,8 @@ float aspectratio = float(width) / float(height);
   glEnableVertexAttribArray(0);
 
   //load model here
-
+  Model stadium("../../../src/resources/objects/Stadium.obj");
+  //Model LightBulb("../../../src/resources/objects/bulbs.obj");
 
   // shader configuration
   lightingShader.use();
@@ -212,42 +177,76 @@ float aspectratio = float(width) / float(height);
 	  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	  // be sure to activate shader when setting uniforms/drawing objects
+	  lightingShader.use();
+	  lightingShader.setVec3("viewPos", camera.Position);
+	  lightingShader.setFloat("material.shininess", 32.0f);
+	  lightingShader.setBool("isDark", isDark);
 
-	  //glDepthMask(GL_FALSE);
-	  
-	  /*skyBoxShader.Bind();
-	  glmath::mat4 view = glmath::mat4(glmath::mat3(renderer.camera.GetLookAtMatrix()));
-	  skyBoxShader.setUniform("view", view);
-	  skyBoxShader.setUniform("projection", projection);
-	  skyBox.bind();
+	  light.setLights(lightingShader);
 
-	  glDepthMask(GL_TRUE);
-	  skyBoxShader.Unbind();
+	  // view / projection transformations
+	  glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)width / (float)height, 0.1f, 100.0f);
+	  glm::mat4 view = camera.GetViewMatrix();
+	  lightingShader.setMat4("projection", projection);
+	  lightingShader.setMat4("view", view);
 
-	  //setting for models
-	  float angle = 0.0f;
-	  float timeValue = (float)glfwGetTime();
-	  view = renderer.camera.GetLookAtMatrix();
+	  // render the loaded model
+	  glm::mat4 model = glm::mat4(1.0f);
+	  model = glm::translate(model, glm::vec3(0.0f, -1.495f, 1.0f)); // translate it down so it's at the center of the scene
+	  model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));	// it's a bit too big for our scene, so scale it down
+	  model = glm::rotate(model, glm::radians(-100.0f), glm::vec3(0.0, 1.0, 0.0));
+	  lightingShader.setMat4("model", model);
+	  stadium.Draw(lightingShader);
 
-	  projection = glmath::perspective(to_radians(context.fov), aspectratio, 0.1f, 1000.0f);
-	  glmath::mat4 trans = glmath::mat4(1.0f);
-	  glmath::mat4 model = glmath::mat4(1.0f);
+	  lightCubeShader.use();
+	  lightCubeShader.setMat4("model", model);
+	  lightCubeShader.setMat4("projection", projection);
+	  lightCubeShader.setMat4("view", view);
+	  lightCubeShader.setBool("isDark", isDark);
+	 // LightBulb.Draw(lightCubeShader);
 
-	  model = glmath::mat4(1.0f);
-	  model = glmath::rotate(model, to_radians(angle), glmath::vec3(0.5f, -0.5f, 0.5f));
-	  angle = 0.0f;
-	  trans = glmath::mat4(1.0f);
-	  trans = glmath::translate(trans, glmath::vec3(0.0f, -2.5f, -2.0f));
 
-	  float pt = int(timeValue) % 45 * 4;//converted 45 sec tie value to 180 degree to be use in light direction
-	  model = glmath::translate(model, glmath::vec3(0.0f, 3.0f, 0.0f));
+	  //plane
+	  glBindTexture(GL_TEXTURE_2D, groundTexture);
+	  groundShader.use();
+	  groundShader.setMat4("projection", projection);
+	  groundShader.setMat4("view", view);
+	  groundShader.setFloat("isDark", isDark);
+	  glBindVertexArray(groundPlaneVAO);
+	  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-	  modelShader.setUniform("model", model);
-	  modelShader.setUniform("proejection", projection);
-	  modelShader.setUniform("trans", trans);
-	  modelShader.setUniform("view", view);
-	  //stadium.render(modelShader, true);*/
+	  // also draw the lamp object(s)
+	  //lightCubeShader.use();
+	  //lightCubeShader.setMat4("projection", projection);
+	  //lightCubeShader.setMat4("view", view);
+
+	  // we now draw as many light bulbs as we have point lights.
+	  //glBindVertexArray(lightCubeVAO);
+	  //for (unsigned int i = 0; i <= 17; i++)
+	  //{
+	  //    model = glm::mat4(1.0f);
+	  //    model = glm::translate(model, pointLightPositions[i]);
+	  //    model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
+	  //    lightCubeShader.setMat4("model", model);
+	  //    glDrawArrays(GL_TRIANGLES, 0, 36);
+	  //}
+
+	  // draw skybox as last
+	  glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+	  skyboxShader.use();
+	  view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
+	  skyboxShader.setMat4("view", view);
+	  skyboxShader.setMat4("projection", projection);
+	  skyboxShader.setFloat("isDark", isDark);
+	  // skybox cube
+	  glBindVertexArray(skyboxVAO);
 	  glActiveTexture(GL_TEXTURE0);
+	  glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+	  glDrawArrays(GL_TRIANGLES, 0, 36);
+	  glBindVertexArray(0);
+	  glDepthFunc(GL_LESS);
+	  //glActiveTexture(GL_TEXTURE0);
 	  glfwSwapBuffers(window);
 	  glfwPollEvents();
 

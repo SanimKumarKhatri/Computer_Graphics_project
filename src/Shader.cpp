@@ -69,7 +69,9 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geo
     // shader Program
     ID = glCreateProgram();
     glAttachShader(ID, vertex);
+    std::cout << vertexPath<<"Shader Loaded" << std::endl;
     glAttachShader(ID, fragment);
+    std::cout << fragmentPath << "Shader Loaded" << std::endl;
     if (geometryPath != nullptr)
         glAttachShader(ID, geometry);
     glLinkProgram(ID);
@@ -79,7 +81,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geo
     glDeleteShader(fragment);
     if (geometryPath != nullptr)
         glDeleteShader(geometry);
-
+    
 }
 
 void Shader::use()

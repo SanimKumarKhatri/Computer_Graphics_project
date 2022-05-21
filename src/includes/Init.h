@@ -55,12 +55,12 @@ float skyboxVertices[] = {
 //skybox faces
 vector<std::string> faces
 {
-    "skybox/right.jpg",
-    "skybox/left.jpg",
-    "skybox/top.jpg",
-    "skybox/bottom.jpg",
-    "skybox/front.jpg",
-    "skybox/back.jpg"
+    "../../../src/resources/skybox/right.jpg",
+    "../../../src/resources/skybox/left.jpg",
+    "../../../src/resources/skybox/top.jpg",
+    "../../../src/resources/skybox/bottom.jpg",
+    "../../../src/resources/skybox/front.jpg",
+    "../../../src/resources/skybox/back.jpg"
 };
 
 //groundPlane
@@ -123,13 +123,13 @@ float lightCubeVertices[] = {
 };
 
 // settings
-const unsigned int SCR_WIDTH = 3840;
-const unsigned int SCR_HEIGHT = 2400;
+const unsigned int width = 1920;
+const unsigned int height = 1080;
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 30.0f));
-float lastX = SCR_WIDTH / 2.0f;
-float lastY = SCR_HEIGHT / 2.0f;
+float lastX = width / 2.0f;
+float lastY = height/ 2.0f;
 bool firstMouse = true;
 
 // timing
@@ -239,6 +239,7 @@ unsigned int loadCubemap(vector<std::string> faces)
         {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             stbi_image_free(data);
+            std::cout << "Cubemap texture loaded: "<<faces[i] << std::endl;
         }
         else
         {
