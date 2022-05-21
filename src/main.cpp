@@ -70,7 +70,7 @@ float aspectratio = float(width) / float(height);
   std::cout << glGetString(GL_VERSION) << std::endl;
 
 
-  static const float g_vertex[] = {
+  /*static const float g_vertex[] = {
 	-1.0f,-1.0f,-1.0f, // triangle 1 : begin
 	-1.0f,-1.0f, 1.0f,
 	-1.0f, 1.0f, 1.0f, // triangle 1 : end
@@ -107,18 +107,111 @@ float aspectratio = float(width) / float(height);
 	1.0f, 1.0f, 1.0f,
 	-1.0f, 1.0f, 1.0f,
 	1.0f,-1.0f, 1.0f
-  };
+  };*/
 
-  Shader skyboxShader("resources/shaders/skyboxVS.glsl", "resources/shaders/skyboxFS.glsl");
-  Shader groundShader("resources/shaders/groundVS.glsl", "resources/shaders/groundFS.glsl");
-  Shader lightCubeShader("resources/shaders/lightCubeVS.glsl", "resources/shaders/lightCubeFS.glsl");
-  Shader lightingShader("resources/shaders/lightVS.glsl", "resources/shaders/lightFS.glsl");
+  //shaders
+  Shader skyboxShader("../../../src/resources/shaders/skyboxVS.glsl", "../../../src/resources/shaders/skyboxFS.glsl");
+  Shader groundShader("../../../src/resources/shaders/groundVS.glsl", "../../../src/resources/shaders/groundFS.glsl");
+  Shader lightCubeShader("../../../src/resources/shaders/lightCubeVS.glsl", "../../../src/resources/shaders/lightCubeFS.glsl");
+  Shader lightingShader("../../../src/resources/shaders/lightVS.glsl", "../../../src/resources/shaders/lightFS.glsl");
+
+  //lights
+  Light light;
+
+  //skybox
+  unsigned int skyboxVAO, skyboxVBO;
+  glGenVertexArrays(1, &skyboxVAO);
+  glGenBuffers(1, &skyboxVBO);
+  glBindVertexArray(skyboxVAO);
+  glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  unsigned int cubemapTexture = loadCubemap(faces);
+  skyboxShader.use();
+  skyboxShader.setInt("skybox", 0);
+  //ground plane
+  unsigned int groundPlaneVBO, groundPlaneVAO, groundPlaneEBO;
+  glGenVertexArrays(1, &groundPlaneVAO);
+  glGenBuffers(1, &groundPlaneVBO);
+  glGenBuffers(1, &groundPlaneEBO);
+  glBindVertexArray(groundPlaneVAO);
+  glBindBuffer(GL_ARRAY_BUFFER, groundPlaneVBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(groundPlaneVertices), groundPlaneVertices, GL_STATIC_DRAW);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, groundPlaneEBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(groundPlaneIndices), groundPlaneIndices, GL_STATIC_DRAW);
+  //position attribute
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+  //texture coord attribute
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+  glEnableVertexAttribArray(1);
+  // load and create ground texture 
+  unsigned int groundTexture;
+  glGenTextures(1, &groundTexture);
+  glBindTexture(GL_TEXTURE_2D, groundTexture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+  // set the texture wrapping parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  // set texture filtering parameters
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  // load image, create texture and generate mipmaps
+  int width, height, nrChannels;
+  // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
+  unsigned char* data = stbi_load("../../../src/resources/grass.jfif", &width, &height, &nrChannels, 0);
+  if (data)
+  {
+	  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	  glGenerateMipmap(GL_TEXTURE_2D);
+	  std::cout << "../../../src/resources/grass.jfif texture loaded" << std::endl;
+  }
+  else
+  {
+	  std::cout << "Failed to load texture" << std::endl;
+  }
+  stbi_image_free(data);
+  //groundMatrix
+  glm::mat4 groundModelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(10.f, -1.5f, 0.f));
+  groundModelMatrix = glm::scale(groundModelMatrix, glm::vec3(500.f));
+  groundShader.use();
+  groundShader.setMat4("model", groundModelMatrix);
+  groundShader.setInt("g_texture", 0);
+
+  //lightCube
+  unsigned int lightCubeVBO, lightCubeVAO;
+  glGenVertexArrays(1, &lightCubeVAO);
+  glGenBuffers(1, &lightCubeVBO);
+  glBindBuffer(GL_ARRAY_BUFFER, lightCubeVBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(lightCubeVertices), lightCubeVertices, GL_STATIC_DRAW);
+  glBindVertexArray(lightCubeVAO);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
+
+  //load model here
+
+
+  // shader configuration
+  lightingShader.use();
+  lightingShader.setInt("material.diffuse", 0);
+  lightingShader.setInt("material.specular", 1);
+
 
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window))
   {
+	  //time frame 
+	  float currentFrame = glfwGetTime();
+	  deltaTime = currentFrame - lastFrame;
+	  lastFrame = currentFrame;
+
+	  // input
+	  processInput(window);
+
 	  /* Render here */
-	  glClear(GL_COLOR_BUFFER_BIT);
+	  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
 	  //glDepthMask(GL_FALSE);
 	  
