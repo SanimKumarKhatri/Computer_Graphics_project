@@ -35,7 +35,7 @@ add_definitions(
 	-D_CRT_SECURE_NO_WARNINGS
 )
 
-add_executable(test src/main.cpp "src/includes/vec.h" "src/includes/matrix.h"   "src/math.cpp" "src/includes/vertexbuffer.h" "src/vertexbuffer.cpp" "src/includes/renderer.h" "src/renderer.cpp" "src/includes/vertexbufferlayout.h"  "src/includes/vertexarray.h" "src/vertexarray.cpp" "src/includes/texture.h" "src/texture.cpp" "src/includes/shader.h" "src/shader.cpp" "src/includes/camera.h" "src/camera.cpp" "src/includes/indexbuffer.h" "src/indexbuffer.cpp" "src/includes/cubeMap.h" "src/cubeMap.cpp" "src/includes/framebuffer.h" "src/framebuffer.cpp" "src/includes/mesh.h" "src/mesh.cpp" "src/includes/model.h" "src/model.cpp" "src/includes/renderer_user.h" "src/renderer_user.cpp")
+add_executable(test src/main.cpp )
 
 target_link_libraries(test 
     ${ALL_LIBS}

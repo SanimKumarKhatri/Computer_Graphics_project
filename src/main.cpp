@@ -2,18 +2,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "includes/model.h"
-#include "includes/cubeMap.h"
-#include "includes/camera.h"
-#include "includes/shader.h"
-#include "includes/renderer_user.h"
-
 int main(){
-Renderer renderer;
 const int width = 1000;
 const int height = 800;
-Renderer::width = width;
-Renderer::height = height;
+
 float aspectratio = float(width) / float(height);
   GLFWwindow *window;
   std::cout << "window and renderer initialized" << std::endl;
@@ -37,21 +29,18 @@ float aspectratio = float(width) / float(height);
   }
 
   //disable cursor
-  glfwSetInputMode(window, GLFW_CURSOR,GLFW_CURSOR_NORMAL);
+  //glfwSetInputMode(window, GLFW_CURSOR,GLFW_CURSOR_NORMAL);
 
   //mouse movement call back
-  glfwSetCursorPosCallback(window, mouseCallback);
+  //glfwSetCursorPosCallback(window, mouseCallback);
 
   //scroll callback
-  glfwSetScrollCallback(window, scrollCallBack);
+ // glfwSetScrollCallback(window, scrollCallBack);
 
   //window resize call back
-  glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+ // glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
-  UIcontext context;
-  context.isNightMode = false;
-  context.logMode = false;
-  context.sensitivity = 4.0;
+
 
   /* Make the window's context current */
   glfwWindowHint(GLFW_VERSION_MAJOR, 4);
@@ -123,6 +112,51 @@ float aspectratio = float(width) / float(height);
 	  1.0f, -1.0f,  1.0f
   };
 
+  static const float g_vertex[] = {
+	-1.0f,-1.0f,-1.0f, // triangle 1 : begin
+	-1.0f,-1.0f, 1.0f,
+	-1.0f, 1.0f, 1.0f, // triangle 1 : end
+	1.0f, 1.0f,-1.0f, // triangle 2 : begin
+	-1.0f,-1.0f,-1.0f,
+	-1.0f, 1.0f,-1.0f, // triangle 2 : end
+	1.0f,-1.0f, 1.0f,
+	-1.0f,-1.0f,-1.0f,
+	1.0f,-1.0f,-1.0f,
+	1.0f, 1.0f,-1.0f,
+	1.0f,-1.0f,-1.0f,
+	-1.0f,-1.0f,-1.0f,
+	-1.0f,-1.0f,-1.0f,
+	-1.0f, 1.0f, 1.0f,
+	-1.0f, 1.0f,-1.0f,
+	1.0f,-1.0f, 1.0f,
+	-1.0f,-1.0f, 1.0f,
+	-1.0f,-1.0f,-1.0f,
+	-1.0f, 1.0f, 1.0f,
+	-1.0f,-1.0f, 1.0f,
+	1.0f,-1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f,-1.0f,-1.0f,
+	1.0f, 1.0f,-1.0f,
+	1.0f,-1.0f,-1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f,-1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f,-1.0f,
+	-1.0f, 1.0f,-1.0f,
+	1.0f, 1.0f, 1.0f,
+	-1.0f, 1.0f,-1.0f,
+	-1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	-1.0f, 1.0f, 1.0f,
+	1.0f,-1.0f, 1.0f
+  };
+
+  /*VertexBuffer cube_vertex(g_vertex, sizeof(g_vertex));
+  VertexBufferLayout cube_vertex_layout;
+  cube_vertex_layout.AddFloat(3);
+  VertexArray cube_VA;
+  cube_VA.addBuffer(cube_vertex, cube_vertex_layout);
+
   //cubemap
   const CubeMap skyBox(std::vector<std::string>{
 	  "../../../src/resources/skybox/right.jpg",
@@ -168,28 +202,23 @@ float aspectratio = float(width) / float(height);
 
   Shader modelShader("../../../src/resources/shaders/model.glsl");
 
-  std::cout << "Started loading stadium model\n";
-  //Model stadium("../../../src/resources/models/Soccer Arena Large 03.obj");
-  std::cout << "Finished loading stadium model" << std::endl;
+  //std::cout << "Started loading stadium model\n";
+ // Model stadium("../../../src/resources/model/Stadium.obj");
+  //std::cout << "Finished loading stadium model" << std::endl;
 
-  bool renderToTextureFlag;
-  float moveFactor = 0.0f;
+  //bool renderToTextureFlag;
+  //float moveFactor = 0.0f;
 
 
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window))
   {
-	  //if (context.logMode) {
-		  std::cout << "Camera Position: " << renderer.camera.cameraPosition << std::endl;
-		  std::cout << "Camera Direction: " << renderer.camera.cameraFront << std::endl;
-		  std::cout << "Camera right: " << renderer.camera.cameraRight << std::endl;
-	  //}
 	  /* Render here */
 	  glClear(GL_COLOR_BUFFER_BIT);
 
-	  glDepthMask(GL_FALSE);
+	  //glDepthMask(GL_FALSE);
 	  
-	  skyBoxShader.Bind();
+	  /*skyBoxShader.Bind();
 	  glmath::mat4 view = glmath::mat4(glmath::mat3(renderer.camera.GetLookAtMatrix()));
 	  skyBoxShader.setUniform("view", view);
 	  skyBoxShader.setUniform("projection", projection);
@@ -216,7 +245,11 @@ float aspectratio = float(width) / float(height);
 	  float pt = int(timeValue) % 45 * 4;//converted 45 sec tie value to 180 degree to be use in light direction
 	  model = glmath::translate(model, glmath::vec3(0.0f, 3.0f, 0.0f));
 
-	  //stadium.render(modelShader, true);
+	  modelShader.setUniform("model", model);
+	  modelShader.setUniform("proejection", projection);
+	  modelShader.setUniform("trans", trans);
+	  modelShader.setUniform("view", view);
+	  //stadium.render(modelShader, true);*/
 	  glActiveTexture(GL_TEXTURE0);
 	  glfwSwapBuffers(window);
 	  glfwPollEvents();
