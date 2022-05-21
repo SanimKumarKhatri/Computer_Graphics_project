@@ -1,12 +1,12 @@
 #include <iostream>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "includes/Init.h"
 
 int main(){
-const int width = 1000;
-const int height = 800;
 
+	//aspect ratio
 float aspectratio = float(width) / float(height);
+
+//glfw window creation
   GLFWwindow *window;
   std::cout << "window and renderer initialized" << std::endl;
 
@@ -20,7 +20,7 @@ float aspectratio = float(width) / float(height);
   std::cout << "glfw initialized" << std::endl;
 
   /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(width, height, "Project", NULL, NULL);
+  window = glfwCreateWindow(width, height, "Graphics Project", NULL, NULL);
   if (!window)
   {
 	  std::cout << "Failed to create window" << std::endl;
@@ -29,7 +29,7 @@ float aspectratio = float(width) / float(height);
   }
 
   //disable cursor
-  //glfwSetInputMode(window, GLFW_CURSOR,GLFW_CURSOR_NORMAL);
+  glfwSetInputMode(window, GLFW_CURSOR,GLFW_CURSOR_DISABLED);
 
   //mouse movement call back
   //glfwSetCursorPosCallback(window, mouseCallback);
@@ -60,57 +60,15 @@ float aspectratio = float(width) / float(height);
   //for color of the background
   glClearColor(0.7f, 0.13f, 0.8f, 0.4f);
 
+  //global opengl state
+  glEnable(GL_DEPTH_TEST);
+
   //version of opengl being used
   const GLubyte* vendor = glGetString(GL_VENDOR); // Returns the vendor
   const GLubyte* rendererData = glGetString(GL_RENDERER); // Returns a hint to the model
   std::cout << "Vendor:" << vendor << "   " << "Graphics card:" << rendererData << std::endl;
   std::cout << glGetString(GL_VERSION) << std::endl;
 
-  //vertices for skybox
-  float skyboxVertices[] = {
-	  // positions          
-	  -1.0f,  1.0f, -1.0f,
-	  -1.0f, -1.0f, -1.0f,
-	  1.0f, -1.0f, -1.0f,
-	  1.0f, -1.0f, -1.0f,
-	  1.0f,  1.0f, -1.0f,
-	  -1.0f,  1.0f, -1.0f,
-
-	  -1.0f, -1.0f,  1.0f,
-	  -1.0f, -1.0f, -1.0f,
-	  -1.0f,  1.0f, -1.0f,
-	  -1.0f,  1.0f, -1.0f,
-	  -1.0f,  1.0f,  1.0f,
-	  -1.0f, -1.0f,  1.0f,
-
-	  1.0f, -1.0f, -1.0f,
-	  1.0f, -1.0f,  1.0f,
-	  1.0f,  1.0f,  1.0f,
-	  1.0f,  1.0f,  1.0f,
-	  1.0f,  1.0f, -1.0f,
-	  1.0f, -1.0f, -1.0f,
-
-	  -1.0f, -1.0f,  1.0f,
-	  -1.0f,  1.0f,  1.0f,
-	  1.0f,  1.0f,  1.0f,
-	  1.0f,  1.0f,  1.0f,
-	  1.0f, -1.0f,  1.0f,
-	  -1.0f, -1.0f,  1.0f,
-
-	  -1.0f,  1.0f, -1.0f,
-	  1.0f,  1.0f, -1.0f,
-	  1.0f,  1.0f,  1.0f,
-	  1.0f,  1.0f,  1.0f,
-	  -1.0f,  1.0f,  1.0f,
-	  -1.0f,  1.0f, -1.0f,
-
-	  -1.0f, -1.0f, -1.0f,
-	  -1.0f, -1.0f,  1.0f,
-	  1.0f, -1.0f, -1.0f,
-	  1.0f, -1.0f, -1.0f,
-	  -1.0f, -1.0f,  1.0f,
-	  1.0f, -1.0f,  1.0f
-  };
 
   static const float g_vertex[] = {
 	-1.0f,-1.0f,-1.0f, // triangle 1 : begin
@@ -151,64 +109,10 @@ float aspectratio = float(width) / float(height);
 	1.0f,-1.0f, 1.0f
   };
 
-  /*VertexBuffer cube_vertex(g_vertex, sizeof(g_vertex));
-  VertexBufferLayout cube_vertex_layout;
-  cube_vertex_layout.AddFloat(3);
-  VertexArray cube_VA;
-  cube_VA.addBuffer(cube_vertex, cube_vertex_layout);
-
-  //cubemap
-  const CubeMap skyBox(std::vector<std::string>{
-	  "../../../src/resources/skybox/right.jpg",
-		  "../../../src/resources/skybox/left.jpg",
-		  "../../../src/resources/skybox/top.jpg",
-		  "../../../src/resources/skybox/bottom.jpg",
-		  "../../../src/resources/skybox/front.jpg",
-		  "../../../src/resources/skybox/back.jpg"});
-
-  Shader skyBoxShader("../../../src/resources/shaders/cubeMap.glsl");
-  skyBoxShader.Bind();
-  VertexBuffer skyBoxVB(skyboxVertices, sizeof(skyboxVertices));
-  VertexBufferLayout skyBoxLayout;
-  skyBoxLayout.AddFloat(3);
-  VertexArray skyBoxVA;
-  skyBoxVA.addBuffer(skyBoxVB, skyBoxLayout);
-  
-  //projection matrix
-  glmath::mat4 projection;
-  float fov = 45.0f;
-  projection = glmath::perspective(to_radians(fov), (float)width / (float)height, 0.00000001f, 100.0f);
-
-  //reflection matrix
-  glmath::mat4 reflect(1.0f);
-
-
-  //skybox shader uniform
-  skyBoxShader.Bind();
-
-  //camera
-  glmath::vec3 cameraPos = glmath::vec3(0.0f, -60.0f, -100.0f);
-  // glmath::vec3 cameraPos = glmath::vec3(54.11,3.92044,-55.4537);
-  glmath::vec3 cameraFront = glmath::vec3(0.0f, 0.0f, -1.0f);
-  glmath::vec3 cameraUp = glmath::vec3(0.0f, 1.0f, 0.0f);
-  Camera camera(cameraPos, cameraFront, cameraUp);
-  renderer.camera = camera;
-
-  glEnable(GL_DEPTH_TEST);
-
-  context.renderer = &renderer;
-  context.fov = fov;
-  glfwSetWindowUserPointer(window, &context);
-
-  Shader modelShader("../../../src/resources/shaders/model.glsl");
-
-  //std::cout << "Started loading stadium model\n";
- // Model stadium("../../../src/resources/model/Stadium.obj");
-  //std::cout << "Finished loading stadium model" << std::endl;
-
-  //bool renderToTextureFlag;
-  //float moveFactor = 0.0f;
-
+  Shader skyboxShader("resources/shaders/skyboxVS.glsl", "resources/shaders/skyboxFS.glsl");
+  Shader groundShader("resources/shaders/groundVS.glsl", "resources/shaders/groundFS.glsl");
+  Shader lightCubeShader("resources/shaders/lightCubeVS.glsl", "resources/shaders/lightCubeFS.glsl");
+  Shader lightingShader("resources/shaders/lightVS.glsl", "resources/shaders/lightFS.glsl");
 
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window))
