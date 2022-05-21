@@ -35,7 +35,7 @@ add_definitions(
 	-D_CRT_SECURE_NO_WARNINGS
 )
 
-add_executable(test src/main.cpp  "src/includes/Shader.h" "src/Shader.cpp"  "src/includes/Camera.h" "src/Camera.cpp" "src/includes/Light.h" "src/Light.cpp" "src/includes/Mesh.h" "src/Mesh.cpp")
+add_executable(test src/main.cpp  "src/includes/Shader.h" "src/Shader.cpp"  "src/includes/Camera.h" "src/Camera.cpp" "src/includes/Light.h" "src/Light.cpp" "src/includes/Mesh.h" "src/Mesh.cpp" "src/includes/Model.h" "src/Model.cpp")
 
 target_link_libraries(test 
     ${ALL_LIBS}
