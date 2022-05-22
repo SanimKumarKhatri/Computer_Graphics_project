@@ -3,19 +3,19 @@
 
 Light::Light()
 {
-    sunLightPos1 = glm::vec3(-2.0f, 5.0f, 10.0f);
-    sunLightPos2 = glm::vec3(-1.0f, 15.0f, 60.0f);
-    pointLightPositions[0] = glm::vec3(-4.25f, 0.2f, -2.5f);
-    pointLightPositions[1] = glm::vec3(4.7f, 0.2f, -0.5f);
-    pointLightPositions[2] = glm::vec3(-2.2f, 0.2f, 1.9f);
-    pointLightPositions[3] = glm::vec3(1.4f, 0.2f, 2.7f);
-    pointLightPositions[4] = glm::vec3(3.5f, 0.2f, -5.0f);
-    pointLightPositions[5] = glm::vec3(-1.1f, 0.2f, -6.0f);
+    sunLightPos1 = glm::vec3(3.9f, 30.0f, 4.5f);
+    sunLightPos2 = glm::vec3(3.9f, 30.0f, 4.5f);
+    pointLightPositions[0] = glm::vec3(3.0f, 1.0f, 3.0f);
+    pointLightPositions[1] = glm::vec3(-3.0f, 1.0f, 3.0f);
+    pointLightPositions[2] = glm::vec3(3.0f, 1.0f, -3.0f);
+    pointLightPositions[3] = glm::vec3(-3.0f, 1.0f, -3.0f);
+   // pointLightPositions[4] = glm::vec3(3.5f, 10.0f, -5.0f);
+   /* pointLightPositions[5] = glm::vec3(-1.1f, 0.2f, -6.0f);
 
     pointLightPositions[6] = glm::vec3(-3.5f, 2.5f, -2.5f);
-    pointLightPositions[7] = glm::vec3(3.0f, 3.0f, -1.0f);
+    pointLightPositions[7] = glm::vec3(3.0f, 3.0f, -1.0f);*/
 
-    //street
+    /*//street
     pointLightPositions[8] = glm::vec3(-3.9f, 0.0f, 4.5f);
     pointLightPositions[9] = glm::vec3(2.7f, 0.0f, 5.7f);
     pointLightPositions[10] = glm::vec3(-5.3f, 0.0f, 12.0f);
@@ -23,7 +23,7 @@ Light::Light()
     pointLightPositions[12] = glm::vec3(-6.5f, 0.0f, 19.0f);
     pointLightPositions[13] = glm::vec3(0.1f, 0.0f, 20.1f);
     pointLightPositions[14] = glm::vec3(-7.8f, 0.0f, 26.4f);
-    pointLightPositions[15] = glm::vec3(-1.3f, 0.0f, 27.7f);
+    pointLightPositions[15] = glm::vec3(-1.3f, 0.0f, 27.7f);*/
 }
 
 void Light::setLights(Shader& lightingShader)
@@ -83,7 +83,7 @@ void Light::setLights(Shader& lightingShader)
     lightingShader.setFloat("pointLights[3].linear", 0.35);
     lightingShader.setFloat("pointLights[3].quadratic", 0.44);
 
-    // point light 4
+    /*// point light 4
     lightingShader.setVec3("pointLights[4].position", pointLightPositions[4]);
     lightingShader.setVec3("pointLights[4].ambient", 0.2f, 0.2f, 0.2f);
     lightingShader.setVec3("pointLights[4].diffuse", 1.0f, 0.77f, 0.56f);
@@ -192,7 +192,7 @@ void Light::setLights(Shader& lightingShader)
     lightingShader.setVec3("pointLights[15].specular", 0.0f, 0.0f, 0.0f);
     lightingShader.setFloat("pointLights[15].constant", 1.0f);
     lightingShader.setFloat("pointLights[15].linear", 0.22);
-    lightingShader.setFloat("pointLights[15].quadratic", 0.20);
+    lightingShader.setFloat("pointLights[15].quadratic", 0.20);*/
 }
 
 

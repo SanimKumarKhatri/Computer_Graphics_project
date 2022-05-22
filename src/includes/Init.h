@@ -127,7 +127,7 @@ const unsigned int width = 1920;
 const unsigned int height = 1080;
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 30.0f));
+Camera camera(glm::vec3(0.0f, 10.0f, 40.0f));
 float lastX = width / 2.0f;
 float lastY = height/ 2.0f;
 bool firstMouse = true;
@@ -218,7 +218,7 @@ void processInput(GLFWwindow* window)
         camera.ProcessKeyboard(RIGHT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
         isDark = false;
-    if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
         isDark = true;
 }
 

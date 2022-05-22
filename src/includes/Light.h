@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 #include "includes/Shader.h"
 
-const int noOfLight = 16;
+const int noOfLight = 4;
 
 class Light
 {

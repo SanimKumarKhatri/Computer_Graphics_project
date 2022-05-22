@@ -1,15 +1,5 @@
-# Blender MTL File: 'Unityproject2.blend'
-# Material Count: 12
-
-newmtl Black
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.012982 0.012982 0.012982
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
+# Blender MTL File: 'uploads_files_2571967_Stadium.blend'
+# Material Count: 10
 
 newmtl Stadium_light
 Ns 225.000000
@@ -31,6 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd Solid_green.png
 
 newmtl WOOD
 Ns 225.000000
@@ -41,6 +32,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd wood.png
 
 newmtl White
 Ns 225.000000
@@ -51,6 +43,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd Solid_white.png
 
 newmtl concrete
 Ns 30.350084
@@ -71,6 +64,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd Cyan.png
 
 newmtl field
 Ns 225.000000
@@ -83,16 +77,6 @@ d 1.000000
 illum 2
 map_Kd stadium field.png
 
-newmtl grassy
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.259317 0.801655 0.132140
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-
 newmtl green_field
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
@@ -102,6 +86,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd ground.png
 
 newmtl plastic.001
 Ns 440.999985

@@ -38,7 +38,7 @@ float aspectratio = float(width) / float(height);
  glfwSetScrollCallback(window, scroll_callback);
 
   //window resize call back
- // glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+ glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 
 
@@ -136,7 +136,7 @@ float aspectratio = float(width) / float(height);
   stbi_image_free(data);
 
   //groundMatrix
-  glm::mat4 groundModelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(10.f, -1.5f, 0.f));
+  glm::mat4 groundModelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(10.f, -1.5f, 0.0f));
   groundModelMatrix = glm::scale(groundModelMatrix, glm::vec3(500.f));
   groundShader.use();
   groundShader.setMat4("model", groundModelMatrix);
@@ -193,18 +193,18 @@ float aspectratio = float(width) / float(height);
 
 	  // render the loaded model
 	  glm::mat4 model = glm::mat4(1.0f);
-	  model = glm::translate(model, glm::vec3(0.0f, -1.495f, 1.0f)); // translate it down so it's at the center of the scene
+	  //model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
 	  model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));	// it's a bit too big for our scene, so scale it down
 	  model = glm::rotate(model, glm::radians(-100.0f), glm::vec3(0.0, 1.0, 0.0));
 	  lightingShader.setMat4("model", model);
 	  stadium.Draw(lightingShader);
 
-	  lightCubeShader.use();
+	  /*lightCubeShader.use();
 	  lightCubeShader.setMat4("model", model);
 	  lightCubeShader.setMat4("projection", projection);
 	  lightCubeShader.setMat4("view", view);
 	  lightCubeShader.setBool("isDark", isDark);
-	 // LightBulb.Draw(lightCubeShader);
+	  LightBulb.Draw(lightCubeShader);*/
 
 
 	  //plane
@@ -216,21 +216,6 @@ float aspectratio = float(width) / float(height);
 	  glBindVertexArray(groundPlaneVAO);
 	  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-	  // also draw the lamp object(s)
-	  //lightCubeShader.use();
-	  //lightCubeShader.setMat4("projection", projection);
-	  //lightCubeShader.setMat4("view", view);
-
-	  // we now draw as many light bulbs as we have point lights.
-	  //glBindVertexArray(lightCubeVAO);
-	  //for (unsigned int i = 0; i <= 17; i++)
-	  //{
-	  //    model = glm::mat4(1.0f);
-	  //    model = glm::translate(model, pointLightPositions[i]);
-	  //    model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
-	  //    lightCubeShader.setMat4("model", model);
-	  //    glDrawArrays(GL_TRIANGLES, 0, 36);
-	  //}
 
 	  // draw skybox as last
 	  glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
