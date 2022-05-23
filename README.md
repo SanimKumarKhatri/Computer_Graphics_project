@@ -1,4 +1,4 @@
-# 3D Modeling and Renderign of Stadium
+# 3D Modeling and Rendering of Stadium
 Computer Graphics project done for completion of pratical course on **Computer Graphics** (4th semester)
 ## Features
 - GLFW and GLM libraries used along with Assimp and stb_image
