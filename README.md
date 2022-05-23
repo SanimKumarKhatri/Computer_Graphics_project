@@ -14,3 +14,6 @@ Computer Graphics project done for completion of pratical course on **Computer G
 - open in any IDE
 - generate cmake file
 - build the project
+# Result
+![This is result image](https://github.com/SanimKumarKhatri/Computer_Graphics_project/blob/main/Documents/Images/dayview1.png)
+![This is night result image](https://github.com/SanimKumarKhatri/Computer_Graphics_project/blob/main/Documents/Images/nightview2.png)
