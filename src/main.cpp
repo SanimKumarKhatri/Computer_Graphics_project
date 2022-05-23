@@ -62,7 +62,7 @@ float aspectratio = float(width) / float(height);
   //for color of the background
   glClearColor(0.7f, 0.13f, 0.8f, 0.4f);
 
-  //global opengl state
+  //depth test
   glEnable(GL_DEPTH_TEST);
 
   //version of opengl being used
@@ -154,7 +154,7 @@ float aspectratio = float(width) / float(height);
 
   //load model here
   Model stadium("../../../src/resources/objects/Stadium.obj");
-  //Model LightBulb("../../../src/resources/objects/bulbs.obj");
+  Model LightBulb("../../../src/resources/objects/bulbs.obj");
 
   // shader configuration
   lightingShader.use();
@@ -199,12 +199,12 @@ float aspectratio = float(width) / float(height);
 	  lightingShader.setMat4("model", model);
 	  stadium.Draw(lightingShader);
 
-	  /*lightCubeShader.use();
+	  lightCubeShader.use();
 	  lightCubeShader.setMat4("model", model);
 	  lightCubeShader.setMat4("projection", projection);
 	  lightCubeShader.setMat4("view", view);
 	  lightCubeShader.setBool("isDark", isDark);
-	  LightBulb.Draw(lightCubeShader);*/
+	  LightBulb.Draw(lightCubeShader);
 
 
 	  //plane

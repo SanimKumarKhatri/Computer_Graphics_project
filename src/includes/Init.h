@@ -138,37 +138,6 @@ float lastFrame = 0.0f;
 
 bool isDark = false;
 
-// positions of the point lights
-glm::vec3 pointLightPositions[] = {
-glm::vec3(-2.0f, 5.0f, 10.0f),
-glm::vec3(-1.0f, 15.0f, 60.0f),
-
-glm::vec3(-4.25f, 0.2f, -2.5f),
-glm::vec3(4.7f, 0.2f,  -0.5f),
-
-glm::vec3(-2.2f, 0.2f, 1.9f),
-glm::vec3(1.4f, 0.2f, 2.7f),
-
-glm::vec3(3.5f, 0.2f, -5.0f),
-glm::vec3(-1.1f, 0.2f, -6.0f),
-
-glm::vec3(-3.5f, 2.5f, -2.5f),
-glm::vec3(3.0f, 3.0f, -1.0f),
-
-//street
-glm::vec3(-3.9f, 0.0f, 4.5f),
-glm::vec3(2.7f, 0.0f, 5.7f),
-
-glm::vec3(-5.3f, 0.0f, 12.0f),
-glm::vec3(1.3f, 0.0f, 13.0f),
-
-glm::vec3(-6.5f, 0.0f, 19.0f),
-glm::vec3(0.1f, 0.0f, 20.1f),
-
-glm::vec3(-7.8f, 0.0f, 26.4f),
-glm::vec3(-1.3f, 0.0f, 27.7f),
-};
-
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -208,15 +177,15 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
         camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
         camera.ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         isDark = false;
     if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
         isDark = true;

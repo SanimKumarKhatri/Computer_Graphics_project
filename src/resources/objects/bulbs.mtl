@@ -1,49 +1,5 @@
 # Blender MTL File: 'bulbs.blend'
-# Material Count: 5
-
-newmtl Plastic_Matte
-Ns 40.000007
-Ka 1.000000 1.000000 1.000000
-Kd 0.950000 0.950000 0.950000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 3
-map_Kd white-color-texture-abstract-background-pattern-can-be-used-as-wallpaper-cover-page-wallpaper-against-winter-season-white-132880917.jpg
-
-newmtl Plastic_Matte.001
-Ns 40.000007
-Ka 1.000000 1.000000 1.000000
-Kd 0.950000 0.950000 0.950000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 3
-map_Kd white-color-texture-abstract-background-pattern-can-be-used-as-wallpaper-cover-page-wallpaper-against-winter-season-white-132880917.jpg
-
-newmtl Plastic_Matte.002
-Ns 40.000007
-Ka 1.000000 1.000000 1.000000
-Kd 0.950000 0.950000 0.950000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 3
-map_Kd white-color-texture-abstract-background-pattern-can-be-used-as-wallpaper-cover-page-wallpaper-against-winter-season-white-132880917.jpg
-
-newmtl Plastic_Matte.003
-Ns 40.000007
-Ka 1.000000 1.000000 1.000000
-Kd 0.950000 0.950000 0.950000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 3
-map_Kd white-color-texture-abstract-background-pattern-can-be-used-as-wallpaper-cover-page-wallpaper-against-winter-season-white-132880917.jpg
+# Material Count: 1
 
 newmtl fence_material.007
 Ns 225.000000

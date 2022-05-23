@@ -20,7 +20,7 @@ struct PointLight {
 };
 
 
-#define NR_POINT_LIGHTS 4
+#define NR_POINT_LIGHTS 2
 
 in vec3 FragPos;
 in vec3 Normal;
